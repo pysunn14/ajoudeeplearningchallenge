@@ -1,48 +1,3 @@
-# 아주소중한딥러닝챌린지 
-
-## Environment
-
-- Python 3.11.13
-- pip : requirements.txt
-- conda : environment.yml
-- GPU : A5000 24GB
-- CUDA Version: 12.6
-
-### 폴더 구조 
-
-<img width="366" height="691" alt="image" src="https://github.com/user-attachments/assets/2377d1ee-1a5a-4fec-a7fb-1b2b6ef7a462" />
-
-
-- 소스코드 대부분 절대경로로 작업하여 경로 변환 필요
-
-model_download.py : Qwen2.5VL 다운로드
-download_image.py : 이미지 캐시 저장 
-preprocess_train.py : 훈련 데이터셋 전처리
-preprocess_inference.py : 추론 데이터셋 전처리 
-
-train_model.py : finetuning 모델 훈련
-inference.py : 모델 추론 진행 
-
-# 훈련 옵션 
-
-## preprocess_train --mode [multimodal, text]
-
-- text only 모드만 사용합니다 
-- 현재 훈련 및 추론이 text-only 로 진행하였으므로 multimodal 사용 X
-
-## train_model.py
-
-
-
-## inference.py 
-
---base 
---adapter 어댑터 경로를 설정합니다. finetuned/checkpoint-338 등 
---sample 샘플 데이터셋으로 추론을 진행합니다. 
-
-## evaluation.py
-
--- Ground Truth 역할을 하는 GT.csv 를 생성 후 샘플 셋에 대한 추론 결과 검증이 가능합니다. 
 # Ajou Multimodal Deep Learning Challenge
 
 > 아주소중한딥러닝챌린지 경진대회 - 멀티모달 AI 모델 개발 
@@ -73,9 +28,10 @@ multimodal/
 └── README.md                   # 프로젝트 문서
 ```
 
-![프로젝트 구조](image.png)
+<img width="366" height="691" alt="image" src="https://github.com/user-attachments/assets/48979468-65b0-4a64-bf70-bb97a75a100e" />
 
-## 🛠️ 환경 설정
+
+## 환경 설정
 
 ### 시스템 요구사항
 - **Python**: 3.11.13
