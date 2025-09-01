@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+.venv/
+.idea/
+.vscode/
+
+# 데이터 / 캐시 / 다운로드
+dataset/
+data/
+*.parquet
+image_cache/
+download_report/
+cache/
+*.sqlite
+*.db
+preprocessed_inference/
+preprocessed_training/
+
+# 이미지 / 바이너리 / 미디어
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.gif
+*.tiff
+*.csv
+images/
+img/
+
+# 모델 체크포인트 / 대형 바이너리
+*.bin
+*.pt
+*.pth
+*.safetensors
+model/
+models/
+checkpoint*/
+*.ckpt
+src/finetuned/
+
+# Huggingface / transformers cache
+~/.cache/huggingface
+transformers_cache/
+hf_cache/
+
+# 기타
+.DS_Store
+.env
+.secretpath/to/your.csv
