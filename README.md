@@ -101,7 +101,7 @@ python src/preprocess_inference.py --sample --mode three
 
 ### 4. 모델 훈련
 ```bash
-# 기본 훈련 (2 에폭)
+# 기본 훈련 (1 에폭)
 python src/train_model.py
 
 # 사용자 정의 설정
