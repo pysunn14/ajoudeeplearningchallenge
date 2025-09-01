@@ -10,7 +10,9 @@
 
 ### 폴더 구조 
 
-<img width="362" height="728" alt="image" src="https://github.com/user-attachments/assets/94e68673-6807-4000-9400-912ac56e5086" />
+<img width="366" height="691" alt="image" src="https://github.com/user-attachments/assets/2377d1ee-1a5a-4fec-a7fb-1b2b6ef7a462" />
+
+
 - 소스코드 대부분 절대경로로 작업하여 경로 변환 필요
 
 model_download.py : Qwen2.5VL 다운로드
