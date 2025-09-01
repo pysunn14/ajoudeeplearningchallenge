@@ -9,7 +9,9 @@
 - CUDA Version: 12.6
 
 ### 폴더 구조 
-![alt text](image.png)
+
+<img width="362" height="728" alt="image" src="https://github.com/user-attachments/assets/94e68673-6807-4000-9400-912ac56e5086" />
+- 소스코드 대부분 절대경로로 작업하여 경로 변환 필요
 
 model_download.py : Qwen2.5VL 다운로드
 download_image.py : 이미지 캐시 저장 
