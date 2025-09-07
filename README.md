@@ -7,6 +7,12 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![CUDA](https://img.shields.io/badge/CUDA-12.6-green.svg)](https://developer.nvidia.com/cuda-downloads)
 
+
+## Model
+[huggingface](https://huggingface.co/pysunn/Qwen2.5-VL-7B-Instruct-multitask)
+
+- 실제 제출용 어댑터 : checkpoint-694 (25% sampling, 1 epochs)
+
 ## 프로젝트 구조
 
 ```
