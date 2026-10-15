@@ -1,3 +1,4 @@
+from project_paths import project_path
 # "Qwen/Qwen2.5-VL-7B-Instruct" model download script
 from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
 import torch
@@ -9,7 +10,7 @@ model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
     torch_dtype=torch.bfloat16,
     device_map="auto",
     trust_remote_code=True,
-    cache_dir="../model/qwen/Qwen2.5-VL-7B-Instruct"
+    cache_dir=project_path("model", "qwen", "Qwen2.5-VL-7B-Instruct")
 )       
 
 processor = AutoProcessor.from_pretrained(model_name, padding_side='left')

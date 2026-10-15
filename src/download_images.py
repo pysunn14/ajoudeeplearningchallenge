@@ -1,3 +1,4 @@
+from project_paths import project_path
 import os
 import hashlib
 import time
@@ -13,7 +14,7 @@ from datasets import load_dataset
 import json
 from collections import defaultdict
 
-FILE_PATH = '/hdd1/minseok/dev/contest/multimodal/'
+FILE_PATH = project_path()
 TRAIN_SAMPLE_PATH = 'dataset/deeplearningchallenge/deep_chal_multitask_dataset.parquet'
 TEST_SAMPLE_PATH = 'dataset/deeplearningchallenge/deep_chal_multitask_dataset_test.parquet'
 IMAGE_CACHE_DIR = os.path.join(FILE_PATH, "image_cache")
@@ -146,7 +147,7 @@ def collect_all_image_urls(include_train=True, include_test=True):
     if include_train:
         print("TRAIN PROCESSING")
         try:
-            train_dataset = load_dataset('parquet', data_files=FILE_PATH + TRAIN_SAMPLE_PATH, split='train')
+            train_dataset = load_dataset('parquet', data_files=os.path.join(FILE_PATH, TRAIN_SAMPLE_PATH), split='train')
             print(f"훈련 데이터셋 크기: {len(train_dataset)}")
             
             train_urls, train_url_to_samples = collect_image_urls_from_dataset(train_dataset, "TRAIN_SET")
@@ -163,7 +164,7 @@ def collect_all_image_urls(include_train=True, include_test=True):
     if include_test:
         print("TEST PROCESSING")
         try:
-            test_dataset = load_dataset('parquet', data_files=FILE_PATH + TEST_SAMPLE_PATH, split='train')
+            test_dataset = load_dataset('parquet', data_files=os.path.join(FILE_PATH, TEST_SAMPLE_PATH), split='train')
             print(f"테스트 데이터셋 크기: {len(test_dataset)}")
             
             test_urls, test_url_to_samples = collect_image_urls_from_dataset(test_dataset, "TEST_SET")

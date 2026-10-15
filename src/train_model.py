@@ -1,3 +1,4 @@
+from project_paths import project_path
 import os
 import pandas as pd
 import torch
@@ -57,8 +58,8 @@ def setup_reproducibility(seed=42):
 os.environ["WANDB_DISABLED"] = "true"
 os.environ["WANDB_MODE"] = "disabled"
 
-FILE_PATH = '/hdd1/minseok/dev/contest/multimodal/'
-PREPROCESSED_TRAINING_PATH = FILE_PATH + 'preprocessed_training/training_dataset'
+FILE_PATH = project_path()
+PREPROCESSED_TRAINING_PATH = os.path.join(FILE_PATH, 'preprocessed_training/training_dataset')
 TEST_SIZE = 0.1
 
 MAX_SEQUENCE_LENGTH = 1024  
@@ -298,7 +299,7 @@ def setup_model_and_processor():
         device_map="auto",
         trust_remote_code=True,
         attn_implementation="flash_attention_2", 
-        cache_dir="../model/qwen/Qwen2.5-VL-7B-Instruct"
+        cache_dir=project_path("model", "qwen", "Qwen2.5-VL-7B-Instruct")
     )
     
     model = prepare_model_for_kbit_training(model)
@@ -339,7 +340,7 @@ def setup_lora_config():
 def setup_training_args():
 
     config = SFTConfig(
-        output_dir="finetuned",
+        output_dir=project_path("src", "finetuned"),
         num_train_epochs=1,
 
         # Optimization

@@ -1,3 +1,4 @@
+from project_paths import project_path
 import os
 import json
 import pickle
@@ -10,10 +11,10 @@ from tqdm import tqdm
 import argparse
 
 # 설정 
-FILE_PATH = '/hdd1/minseok/dev/contest/multimodal/'
+FILE_PATH = project_path()
 TRAIN_PATH = 'dataset/deeplearningchallenge/deep_chal_multitask_dataset.parquet'
 
-PREPROCESSED_DATA_PATH = FILE_PATH + 'preprocessed_inference' 
+PREPROCESSED_DATA_PATH = os.path.join(FILE_PATH, 'preprocessed_inference')
 IMAGE_CACHE_DIR = os.path.join(FILE_PATH, "image_cache")
 DOWNLOAD_REPORT_PATH = os.path.join(FILE_PATH, "download_report")
 
@@ -302,7 +303,7 @@ def preprocess_generator(dataset, successful_urls, text_only_mode=False):
         print(f"이미지 성공: {image_success}, 실패: {image_failed}, 미다운로드: {no_downloaded}")
     print(f"전체 실패: {failed_count}")
 
-def create_training_dataset(successful_urls, output_path=FILE_PATH + 'preprocessed_training', text_only_mode=False):
+def create_training_dataset(successful_urls, output_path=os.path.join(FILE_PATH, 'preprocessed_training'), text_only_mode=False):
 
     mode_text = "TEXT-ONLY MODE" if text_only_mode else "MULTIMODAL MODE"
     print('[ 훈련 전처리 시작 ]', mode_text)  
@@ -312,7 +313,7 @@ def create_training_dataset(successful_urls, output_path=FILE_PATH + 'preprocess
         print("제외 TASK : captioning, vqa")
     
     # data load
-    original_dataset = load_dataset('parquet', data_files=FILE_PATH + TRAIN_PATH, split='train')
+    original_dataset = load_dataset('parquet', data_files=os.path.join(FILE_PATH, TRAIN_PATH), split='train')
     print(f"원본 데이터 로드: {len(original_dataset)}")
     
     os.makedirs(output_path, exist_ok=True)

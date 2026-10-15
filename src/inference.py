@@ -1,3 +1,4 @@
+from project_paths import project_path
 import torch
 from tqdm import tqdm
 import base64
@@ -21,7 +22,7 @@ from qwen_vl_utils import process_vision_info
 PIL_MAX_PIXELS = 89478485  
 Image.MAX_IMAGE_PIXELS = PIL_MAX_PIXELS
 
-FILE_PATH = '/hdd1/minseok/dev/contest/multimodal/'
+FILE_PATH = project_path()
 IMAGE_CACHE_DIR = os.path.join(FILE_PATH, "image_cache")
 DOWNLOAD_REPORT_PATH = os.path.join(FILE_PATH, "download_report")
 MAX_NEW_TOKENS = 512
@@ -246,7 +247,7 @@ def inference_process(dataset, processor, model, successful_urls,args):
 def main():
 
     parser = argparse.ArgumentParser(description='Model Inference')
-    parser.add_argument('--adapter', type=str, default="finetuned/checkpoint-694")
+    parser.add_argument('--adapter', type=str, default=project_path("src", "finetuned", "checkpoint-694"))
     parser.add_argument('--base', action='store_true')
     parser.add_argument('--preprocessed-data', type=str, default="preprocessed_inference/")
     parser.add_argument('--sample', action='store_true')
@@ -292,7 +293,7 @@ def main():
         torch_dtype=torch.bfloat16,
         device_map="auto",
         trust_remote_code=True,
-        cache_dir="../model/qwen/Qwen2.5-VL-7B-Instruct"
+        cache_dir=project_path("model", "qwen", "Qwen2.5-VL-7B-Instruct")
     )       
 
     # 모델 선택 
@@ -332,7 +333,7 @@ def main():
         else:
             dataset_name = "inference_dataset"
         
-        preprocessed_path = FILE_PATH + args.preprocessed_data + dataset_name
+        preprocessed_path = os.path.join(FILE_PATH, args.preprocessed_data, dataset_name)
         
         if not os.path.exists(preprocessed_path):
             print(f"전처리된 데이터가 없음: {preprocessed_path}")
@@ -347,7 +348,7 @@ def main():
         else:
             metadata_filename = "inference_metadata.json"
             
-        metadata_path = FILE_PATH + args.preprocessed_data + metadata_filename
+        metadata_path = os.path.join(FILE_PATH, args.preprocessed_data, metadata_filename)
 
         if os.path.exists(metadata_path):
             import json
