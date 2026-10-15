@@ -1,3 +1,4 @@
+from project_paths import project_path
 import os
 import json
 import pickle
@@ -10,12 +11,12 @@ from tqdm import tqdm
 import argparse
 
 # 설정 
-FILE_PATH = '/hdd1/minseok/dev/contest/multimodal/'
+FILE_PATH = project_path()
 TRAIN_PATH = 'dataset/deeplearningchallenge/deep_chal_multitask_dataset.parquet'
 TEST_PATH = 'dataset/deeplearningchallenge/deep_chal_multitask_dataset_test.parquet'
 SAMPLE_PATH = 'dataset/deeplearningchallenge/deep_chal_multitask_dataset_sample.parquet'
 
-PREPROCESSED_DATA_PATH = FILE_PATH + 'preprocessed_data'
+PREPROCESSED_DATA_PATH = os.path.join(FILE_PATH, 'preprocessed_data')
 IMAGE_CACHE_DIR = os.path.join(FILE_PATH, "image_cache")
 DOWNLOAD_REPORT_PATH = os.path.join(FILE_PATH, "download_report")
 
@@ -400,14 +401,14 @@ def _url_to_cache_path(url: str) -> str:
     name = hashlib.sha1(url.encode()).hexdigest()
     return os.path.join(IMAGE_CACHE_DIR, name + ext)
 
-def create_inference_dataset(successful_urls, output_path=FILE_PATH + 'preprocessed_inference', use_sample=False, prompt_function=prompt_three_shot):
+def create_inference_dataset(successful_urls, output_path=os.path.join(FILE_PATH, 'preprocessed_inference'), use_sample=False, prompt_function=prompt_three_shot):
     
     # data path
     data_path = SAMPLE_PATH if use_sample else TEST_PATH
     dataset_type = "샘플" if use_sample else "테스트"
     
     # data load 
-    dataset = load_dataset('parquet', data_files = FILE_PATH + data_path, split='train')
+    dataset = load_dataset('parquet', data_files = os.path.join(FILE_PATH, data_path), split='train')
     print(f" {dataset_type} 데이터 로드, Sample {len(dataset)}개 ")     
     inference_samples = []
     failed_count = 0
@@ -526,7 +527,7 @@ def main():
         exit(0)
 
     # 출력 경로 설정 (샘플 모드일 때 구분)
-    output_path = FILE_PATH + 'preprocessed_inference'
+    output_path = os.path.join(FILE_PATH, 'preprocessed_inference')
 
     create_inference_dataset(
         successful_urls=successful_urls, 

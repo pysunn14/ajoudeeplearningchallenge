@@ -67,6 +67,25 @@ source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 ```
 
+## 파일 경로
+
+데이터셋, 전처리 결과, 이미지 캐시와 모델 경로는 현재 터미널 위치가 아니라
+이 저장소의 루트 폴더를 기준으로 정합니다. 저장소를 다른 위치에 복제해도
+소스 코드의 경로를 수정할 필요가 없습니다.
+
+- 데이터셋: `dataset/deeplearningchallenge/`
+- 모델 캐시: `model/qwen/Qwen2.5-VL-7B-Instruct/`
+- 학습 체크포인트: `src/finetuned/`
+- 추론 결과 및 평가 입력: `src/submissions/`
+- 평가용 BERT·CLIP 모델: `model/bert/`, `model/clip/` 아래의 기존 모델 스냅샷 구조
+- 평가 라이브러리 캐시 기본값: `hf_cache/`. 직접 지정한 `HF_HOME`,
+  `TRANSFORMERS_CACHE`, `HF_DATASETS_CACHE`, `TORCH_HOME`, `CLIP_CACHE_DIR`는 유지합니다.
+
+어댑터와 평가 입력·출력에 직접 넘기는 상대경로는 명령을 실행하는 폴더 기준입니다.
+추론의 `--preprocessed-data`는 저장소 기준 상대경로나 절대경로를 받습니다.
+아래 명령 예시는 저장소 루트에서 실행합니다. 설치 목록의 버전은 당시 환경
+기록을 유지하며, 최신 보안 수정 버전으로 갱신한 목록은 아닙니다.
+
 ## 사용법
 
 ### 1. 모델 다운로드
@@ -136,13 +155,13 @@ python src/inference.py --base
 
 ### 6. 모델 샘플 평가 
 
-- **src/submission/evaluation.py script**로 BLEU스코어가 아니라 5개의 다른 스코어 점수를 확인 가능합니다. 
+- **src/submissions/evaluation.py script**로 BLEU스코어가 아니라 5개의 다른 스코어 점수를 확인 가능합니다.
 - 먼저 Ground Truth 역할을 하는 GT.csv 파일을 sample dataset으로부터 수동으로 제작해야합니다.
 
 ```bash
 python src/inference.py --adapter src/finetuned/checkpoint-694
 
-pythonn src/submission/evaluation.py --submission src/submission/finetuned_sample_submission.csv --gt src/submission/GT.csv
+python src/submissions/evaluation.py --submission src/submissions/finetuned_sample_submission.csv --gt src/submissions/GT.csv
 ```
 
 ## Task

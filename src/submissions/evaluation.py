@@ -19,19 +19,13 @@ python evaluation.py --submission submission.csv --gt GT.csv
 import os
 import sys
 
-os.environ['HOME'] = '/hdd1/minseok'
-os.environ['HF_HOME'] = '/hdd1/minseok/dev/hf_cache'
-os.environ['TRANSFORMERS_CACHE'] = '/hdd1/minseok/dev/hf_cache/transformers'
-os.environ['HF_DATASETS_CACHE'] = '/hdd1/minseok/dev/hf_cache/datasets'
-os.environ['TORCH_HOME'] = '/hdd1/minseok/dev/hf_cache/torch'
+from pathlib import Path
 
-os.environ['CLIP_CACHE_DIR'] = '/hdd1/minseok/dev/hf_cache/models--openai--clip-vit-base-patch32'
-os.environ['XDG_CACHE_HOME'] = '/hdd1/minseok/dev/hf_cache'
+# 직접 실행하는 평가 스크립트에서도 src의 공통 경로 모듈을 찾는다.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from project_paths import project_path, configure_evaluation_cache
 
-os.makedirs('/hdd1/minseok/dev/hf_cache/transformers', exist_ok=True)
-os.makedirs('/hdd1/minseok/dev/hf_cache/datasets', exist_ok=True)
-os.makedirs('/hdd1/minseok/dev/hf_cache/torch', exist_ok=True)
-os.makedirs('/hdd1/minseok/dev/hf_cache/clip', exist_ok=True)
+configure_evaluation_cache()
 
 import pandas as pd
 import argparse
@@ -52,7 +46,7 @@ import hashlib
 import traceback
 
 # === 이미지 캐시 관련 설정 (inference.py에서 가져옴) ===
-FILE_PATH = '/hdd1/minseok/dev/contest/multimodal/'
+FILE_PATH = project_path()
 IMAGE_CACHE_DIR = os.path.join(FILE_PATH, "image_cache")
 DOWNLOAD_REPORT_PATH = os.path.join(FILE_PATH, "download_report")
 
@@ -128,12 +122,6 @@ def load_image_from_cache_or_download(input_data, successful_urls=None, enable_d
     except Exception as e:
         return None, f"error_{str(e)[:20]}"
 
-os.environ['HF_HOME'] = '/hdd1/minseok/dev/hf_cache'
-os.environ['TRANSFORMERS_CACHE'] = '/hdd1/minseok/dev/hf_cache/transformers'
-os.environ['HF_DATASETS_CACHE'] = '/hdd1/minseok/dev/hf_cache/datasets'
-os.makedirs('/hdd1/minseok/dev/hf_cache/transformers', exist_ok=True)
-os.makedirs('/hdd1/minseok/dev/hf_cache/datasets', exist_ok=True)
-
 # 평가 메트릭을 위한 imports
 try:
     import open_clip
@@ -168,7 +156,7 @@ def calculate_bert_score(candidate: str, reference: str) -> Dict[str, float]:
     if BERT_SCORE_AVAILABLE:
         try:
             # 로컬 BERT 모델 디렉터리 설정
-            local_bert_dir = "/hdd1/minseok/dev/contest/multimodal/model/bert"
+            local_bert_dir = project_path("model", "bert")
             bert_model_path = os.path.join(local_bert_dir, "models--google-bert--bert-base-uncased/snapshots/86b5e0934494bd15c9632b12f734a8a67f723594")
             
             print(f"🔍 BERT 모델 디렉터리 확인: {bert_model_path}")
@@ -255,7 +243,7 @@ def calculate_clip_score(image_path_or_url: str, text: str) -> float:
         class SimpleOpenCLIPScore:
             def __init__(self):
                 # 로컬 모델 경로
-                local_model_path = "/hdd1/minseok/dev/contest/multimodal/model/clip/models--laion--CLIP-ViT-B-32-laion2B-s34B-b79K/snapshots/1a25a446712ba5ee05982a381eed697ef9b435cf/"
+                local_model_path = project_path("model", "clip", "models--laion--CLIP-ViT-B-32-laion2B-s34B-b79K", "snapshots", "1a25a446712ba5ee05982a381eed697ef9b435cf")
                 
                 # 🔍 디버깅: 경로 존재 여부 확인
                 print(f"🔍 디버깅 - 모델 경로 확인: {local_model_path}")
@@ -827,9 +815,9 @@ def save_detailed_results(results: dict, output_path: str = "evaluation_results.
 def main():
     parser = argparse.ArgumentParser(description='멀티모달 모델 평가 (BERT Score, CLIP Score, Exact Match, Accuracy)')
 
-    parser.add_argument('--submission', type=str, default='finetuned_submission_sample.csv')
-    parser.add_argument('--gt', type=str, default='GT.csv')
-    parser.add_argument('--output', type=str, default='evaluation_results.json')
+    parser.add_argument('--submission', type=str, default=project_path('src', 'submissions', 'finetuned_sample_submission.csv'))
+    parser.add_argument('--gt', type=str, default=project_path('src', 'submissions', 'GT.csv'))
+    parser.add_argument('--output', type=str, default=project_path('src', 'submissions', 'evaluation_results.json'))
     
     args = parser.parse_args()
     
